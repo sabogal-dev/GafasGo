@@ -52,7 +52,7 @@ bash
 
 CopyEdit
 
-`git clone https://github.com/tu-usuario/gafasgo.git cd gafasgo
+`git clone https://github.com/sabogal-dev/GafasGo cd gafasgo
 npm install
 npm start` 
 
@@ -72,10 +72,10 @@ Este proyecto es de uso interno y no está abierto a contribuciones externas por
 
 ### 👤 Autor
 
-Desarrollado por [Tu Nombre o Empresa].
+Desarrollado por Sabogal Dev para CODE OPTIKAL SAS.
 
 ----------
 
 ### 📝 Licencia
 
-Este proyecto es de uso privado y no cuenta con una licencia públi
+Este proyecto es de uso privado y no cuenta con una licencia pública
