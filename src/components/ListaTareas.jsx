@@ -41,7 +41,6 @@ export const ListaTareas = () => {
             {
                 tareas && nombresClientes.length > 0 ? tareas.map((tarea) => {
                     const datosCliente = nombresClientes.find(cliente => cliente.id == tarea.id_cliente)
-
                     return <CardTarea tarea={tarea} key={tarea.id} cliente={datosCliente} />
                 }) : null
             }

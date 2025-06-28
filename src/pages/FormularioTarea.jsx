@@ -1,48 +1,82 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import './FormularioTareas.css'
+import marcarTareaVisitado from '../utils/marcarVisitado'
 
 export const FormularioTarea = () => {
-
   let [searchParams] = useSearchParams()
+
+  const tarea = searchParams.get("tarea")
+  const [idTarea, setidTarea] = useState()
+  const [formData, setformData] = useState({
+    estadoVisita: "VISITADO",
+    fechaVisita: 0,
+    DetalleVisita: "",
+    categoriaVisita: ""
+  })
+
+  const onChangeForm = (e) => {
+    const hoy = new Date()
+    setformData({
+      ...formData,
+      [e.target.name]: e.target.value,
+      fechaVisita: hoy
+    })
+  }
+
+  useEffect(() => {
+    setidTarea(searchParams.get("tarea"))
+  }, []);
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+
+    marcarTareaVisitado(formData, tarea)
+  }
+
+
   return (
-    <main className='m-3'>
-      <Link to="/" className='btn btn-dark mb-2'>Volver</Link>
-      <section className='FormularioTarea'>
+    <>
+      <main className='m-3'>
+        <Link to="/" className='btn btn-dark mb-2'>Volver</Link>
+        <section className='FormularioTarea'>
 
-        <div className='d-flex justify-content-between'>
-          <h3>{searchParams.get("cliente")}</h3>
-          <p>25-junio</p>
-        </div>
-        <p>Correria cali junio</p>
-
-
-
-        <form action="">
-
-          <textarea name="" id=""
-            className='form-control'
-            placeholder='Detalles de la visita'
-            rows={3}
-          ></textarea>
-
-          <select name="" id="" className='form-select mt-2'>
-            <option value="">---tipo de visita---</option>
-            <option value="">Venta</option>
-            <option value="">Cobro</option>
-            <option value="">Venta y Cobro</option>
-            <option value="">Marketing</option>
-          </select>
-
-          <input type='file'  className='form-control-file my-4'/>
-          <div className='d-flex flex-column'>
-
-            <button className='btn btn-primary mt-2 '>Visitado</button>
-            <Link to="/" className='btn btn-dark my-2'>Cancelar</Link>
+          <div className='d-flex justify-content-between'>
+            <h3>{searchParams.get("cliente")}</h3>
+            <p>25-junio</p>
           </div>
+          <p>Correria cali junio</p>
 
-        </form>
-      </section>
+
+          {searchParams.get("estado") !== "VISITADO" &&
+            <form>
+
+              <textarea name="DetalleVisita" id=""
+                onChange={onChangeForm}
+                className='form-control'
+                placeholder='Detalles de la visita'
+                rows={3}
+              ></textarea>
+
+              <select name="categoriaVisita" id="" className='form-select mt-2' onChange={onChangeForm}>
+                <option value="">---tipo de visita---</option>
+                <option value="Venta">Venta</option>
+                <option value="Cobro">Cobro</option>
+                <option value="Venta y Cobro">Venta y Cobro</option>
+                <option value="Marketing">Marketing</option>
+              </select>
+
+              <input type='file' className='form-control-file my-4' />
+              <div className='d-flex flex-column'>
+
+                <button className='btn btn-primary mt-2 ' onClick={onSubmit}>Visitado</button>
+                <Link to="/" className='btn btn-dark my-2'>Cancelar</Link>
+              </div>
+
+            </form>
+          }
+        </section >
+      </main>
 
       <section className='FormularioTarea mt-5'>
         <h2 className='alert alert-success'>Informacion Util</h2>
@@ -115,6 +149,6 @@ export const FormularioTarea = () => {
           </tbody>
         </table>
       </section>
-    </main>
+    </>
   )
 }

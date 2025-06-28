@@ -14,6 +14,7 @@ export const useTareas = () => {
         let { data: tareas, error } = await supabase
             .from('tarea')
             .select('*')
+            .in('estadoVisita', ['NO VISITADO', 'REAGENDADO'])
         setTareas(tareas)
     }
 
