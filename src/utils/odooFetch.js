@@ -1,5 +1,5 @@
-export default async function useOdoo(peticion) {
-    const respuesta = await fetch("https://sabogal.top:/apiOdoo", {
+export default async function odooFetch(peticion) {
+    const respuesta = await fetch("https://sabogal.top/apiOdoo", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

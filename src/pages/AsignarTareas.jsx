@@ -58,6 +58,8 @@ export const AsignarTareas = () => {
                 >
                     <option value="">--Vendedor--</option>
                     <option value={1}>JORGE</option>
+                    <option value={2}>YESID</option>
+                    <option value={3}>DANIEL</option>
                 </select>
 
                 <input

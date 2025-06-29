@@ -32,7 +32,6 @@ export default function checkFormulario(correria, clientes) {
 
         formularioSupbase.push(tarea)
     });
-    console.log(formularioSupbase)
     return formularioSupbase
 }
 

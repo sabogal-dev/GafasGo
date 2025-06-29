@@ -7,7 +7,7 @@ export const CardTarea = ({ tarea, cliente }) => {
     const navigate = useNavigate();
 
     const onClick = (id) => {
-        navigate(`/FormTarea?tarea=${id}&cliente=${cliente.name}&estado=${tarea.estadoVisita}`)
+        navigate(`/FormTarea?tarea=${id}&cliente=${cliente.name}&estado=${tarea.estadoVisita}&idCliente=${tarea.id_cliente}`)
         
     }
 

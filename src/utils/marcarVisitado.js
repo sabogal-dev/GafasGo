@@ -7,4 +7,5 @@ export default async function marcarTareaVisitado(bodyFetch, tarea) {
         .update(bodyFetch)
         .eq('id', tarea)
         .select()
+    return { error }
 }

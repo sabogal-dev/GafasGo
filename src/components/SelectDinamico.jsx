@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import useOdoo from "../hooks/useOdoo";
+import odooFetch from "../utils/odooFetch";
 
 
 export const SelectDinamico = ({ agregarCliente }) => {
@@ -14,6 +14,7 @@ export const SelectDinamico = ({ agregarCliente }) => {
         filtro: [["name", "ilike", ""]],
         columna: ["id", "name", "vat"]
     })
+    
     const onChange = (e) => {
         setbusqueda(e.target.value.toLocaleLowerCase());
     }
@@ -32,7 +33,7 @@ export const SelectDinamico = ({ agregarCliente }) => {
 
 
     const cargarApi = async () => {
-        let asignar = await useOdoo(peticion) 
+        let asignar = await odooFetch(peticion) 
         asignar = asignar.slice(0, 20)
         setclientes(asignar);
     }

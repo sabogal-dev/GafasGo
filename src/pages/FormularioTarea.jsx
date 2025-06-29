@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useSearchParams } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router'
+import { InfoCliente } from '../components/InfoCliente'
 import './FormularioTareas.css'
 import marcarTareaVisitado from '../utils/marcarVisitado'
 
 export const FormularioTarea = () => {
+  let navigate = useNavigate();
   let [searchParams] = useSearchParams()
 
-  const tarea = searchParams.get("tarea")
+  const [envio, setenvio] = useState(false)
+  const [errorEnvio, seterrorEnvio] = useState(false)
+
+
   const [idTarea, setidTarea] = useState()
   const [formData, setformData] = useState({
     estadoVisita: "VISITADO",
@@ -28,10 +33,33 @@ export const FormularioTarea = () => {
     setidTarea(searchParams.get("tarea"))
   }, []);
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
+    setenvio(true)
     event.preventDefault();
+    if (formData.DetalleVisita == "" || formData.categoriaVisita == "") {
+      console.log("fallo")
+      setenvio(false);
+      seterrorEnvio(true);
+      return
+    }
+    const { error } = await marcarTareaVisitado(formData, idTarea)
 
-    marcarTareaVisitado(formData, tarea)
+
+    if (!error) {
+      setenvio(false);
+      seterrorEnvio(false)
+
+      setTimeout(() => {
+        navigate("/")
+      }, 300);
+    }
+
+
+    else {
+      setenvio(false);
+      seterrorEnvio(true);
+    }
+
   }
 
 
@@ -66,88 +94,25 @@ export const FormularioTarea = () => {
                 <option value="Marketing">Marketing</option>
               </select>
 
-              <input type='file' className='form-control-file my-4' />
+              {/* <input type='file' className='form-control-file my-4' /> */}
               <div className='d-flex flex-column'>
 
                 <button className='btn btn-primary mt-2 ' onClick={onSubmit}>Visitado</button>
                 <Link to="/" className='btn btn-dark my-2'>Cancelar</Link>
+
               </div>
 
             </form>
           }
+          {envio && <div className='Cargando alert alert-primary'><div className="spinner-border" role="status"></div>Cargando...</div>}
+          {errorEnvio && <div className='Cargando alert alert-danger'>Error en el envio de los datos</div>}
         </section >
       </main>
 
-      <section className='FormularioTarea mt-5'>
-        <h2 className='alert alert-success'>Informacion Util</h2>
+      <section className='FormularioTarea mt-5 mx-3'>
 
+        <InfoCliente idCliente={searchParams.get("idCliente")}></InfoCliente>
 
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Dato</th>
-              <th scope="col">Detalle</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Ultima visita</th>
-              <td>15 enero 2025</td>
-            </tr>
-            <tr>
-              <th scope="row">Ultimo Pedido</th>
-              <td>$ 2.450.000</td>
-            </tr>
-            <tr>
-              <th scope="row">Categoria</th>
-              <td>Excelente</td>
-            </tr>
-            <tr>
-              <th scope="row">Cartera</th>
-              <td>$500.000</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <h2 className='alert alert-warning'>Prevision Meta</h2>
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Marca</th>
-              <th scope="col">Cantidad</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Code line</th>
-              <td>15</td>
-            </tr>
-            <tr>
-              <th scope="row">Code sport</th>
-              <td>5</td>
-            </tr>
-            <tr>
-              <th scope="row">Petite</th>
-              <td>16</td>
-            </tr>
-            <tr>
-              <th scope="row">Premium</th>
-              <td>10</td>
-            </tr>
-            <tr>
-              <th scope="row">Oh</th>
-              <td>25</td>
-            </tr>
-            <tr>
-              <th scope="row">Tonelly</th>
-              <td>13</td>
-            </tr>
-            <tr>
-              <th scope="row">forzanny</th>
-              <td>1</td>
-            </tr>
-          </tbody>
-        </table>
       </section>
     </>
   )

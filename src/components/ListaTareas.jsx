@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTareas } from '../hooks/useTareas'
 import { CardTarea } from './CardTarea';
 import { useFiltroClientes } from '../hooks/useFiltroClientes';
-import useOdoo from '../hooks/useOdoo';
+import odooFetch from '../utils/odooFetch';
 
 export const ListaTareas = () => {
 
@@ -29,11 +29,11 @@ export const ListaTareas = () => {
 
 
     const peticionOdoo = async (datosPeticion) => {
-        const datos = await useOdoo(datosPeticion)
+        const datos = await odooFetch(datosPeticion)
         setnombresClientes(datos)
         setcargando(false)
     }
-    
+
     return (
         <section className='ListaTareas'>
             {cargando && <div className='Cargando alert alert-primary'><div className="spinner-border" role="status"></div>Cargando...</div>}
@@ -45,6 +45,14 @@ export const ListaTareas = () => {
                 }) : null
             }
 
+            {tareas && tareas.length < 1 ?
+                <div className="alert alert-success" role="alert">
+                    <h4 className="alert-heading">Buen Trabajo!</h4>
+                    <p>Felicitaciones, estas al dia con tus tareas de clientes asignadas</p>
+                    
+                    <p className="mb-0">Es todo por ahora...</p>
+                </div>
+                : <p></p>}
         </section>
     )
 }
