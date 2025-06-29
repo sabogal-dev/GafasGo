@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router"
 import "./CardTarea.css"
 
-
+import { Text } from "@chakra-ui/react";
 
 export const CardTarea = ({ tarea, cliente }) => {
     const navigate = useNavigate();
 
     const onClick = (id) => {
         navigate(`/FormTarea?tarea=${id}&cliente=${cliente.name}&estado=${tarea.estadoVisita}&idCliente=${tarea.id_cliente}`)
-        
     }
 
     return (
@@ -28,6 +27,10 @@ export const CardTarea = ({ tarea, cliente }) => {
                     <p>{tarea.estadoVisita}</p>
                 </div>
             </article>
+            <div className="CardTa">
+            <Text>DAVID SABOGAL</Text>
+            </div>
+
         </>
     )
 }
