@@ -1,51 +1,5 @@
-.CardTarea{
-    display: flex;
-    background-color: white;
-    align-items: center;
-    border-radius: 12px;
-    margin-bottom: 1rem;
-    font-size: 12px;
-    justify-content: space-between;
-}
-
-.CardTarea p{
-    margin: 0;
-}
-
-
-.CardInfo{
-    font-weight: bold;
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    gap: 2px;
-    padding: .5rem ;
-}
-
-.CardCorreria, .CardFecha{
-    font-size: 10px;
-}
-.CardFecha{
-    text-align: end;
-    opacity: 70%;
-}
-
-
-.CardEstado{
-    min-width: 80px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-weight: bold;
-    text-align: center;
-    font-size: 12px;
-}
-
-
-/* chakra UI */
-
 .CardTa{
     border: 1px solid rgb(182, 182, 182);
-    height: 100px;
+    padding: 1rem;
     border-radius: 5px;
 }

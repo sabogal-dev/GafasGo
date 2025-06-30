@@ -6,4 +6,5 @@ export default async function crearTareaSupabase(bodyFetch) {
         .from('tarea')
         .insert(bodyFetch)
         .select()
+    return { error }
 }

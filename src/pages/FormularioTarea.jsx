@@ -4,6 +4,7 @@ import { InfoCliente } from '../components/InfoCliente'
 import './FormularioTareas.css'
 import marcarTareaVisitado from '../utils/marcarVisitado'
 
+import { Textarea, Button, Badge, Stack, Heading, Group, Separator, Alert, Spinner, Text, VStack } from '@chakra-ui/react'
 export const FormularioTarea = () => {
   let navigate = useNavigate();
   let [searchParams] = useSearchParams()
@@ -65,51 +66,74 @@ export const FormularioTarea = () => {
 
   return (
     <>
-      <main className='m-3'>
-        <Link to="/" className='btn btn-dark mb-2'>Volver</Link>
+      <Stack m="5">
+        <Button>
+          <Link to="/">Volver</Link>
+        </Button>
         <section className='FormularioTarea'>
-
-          <div className='d-flex justify-content-between'>
-            <h3>{searchParams.get("cliente")}</h3>
-            <p>25-junio</p>
-          </div>
-          <p>Correria cali junio</p>
+          <Stack>
+            <Group>
+              <Heading>{searchParams.get("cliente")}</Heading>
+              <Badge >25-junio</Badge>
+            </Group>
+            <Badge colorPalette="green" mb="4">Correria cali junio</Badge>
+          </Stack>
 
 
           {searchParams.get("estado") !== "VISITADO" &&
             <form>
+              <Stack>
 
-              <textarea name="DetalleVisita" id=""
-                onChange={onChangeForm}
-                className='form-control'
-                placeholder='Detalles de la visita'
-                rows={3}
-              ></textarea>
+                <Textarea name="DetalleVisita" id=""
+                  onChange={onChangeForm}
+                  className='form-control'
+                  placeholder='Detalles de la visita'
+                  rows={3}
+                ></Textarea>
 
-              <select name="categoriaVisita" id="" className='form-select mt-2' onChange={onChangeForm}>
-                <option value="">---tipo de visita---</option>
-                <option value="Venta">Venta</option>
-                <option value="Cobro">Cobro</option>
-                <option value="Venta y Cobro">Venta y Cobro</option>
-                <option value="Marketing">Marketing</option>
-              </select>
+                <select name="categoriaVisita" id="" className='form-select mt-2' onChange={onChangeForm}>
+                  <option value="">---tipo de visita---</option>
+                  <option value="Venta">Venta</option>
+                  <option value="Cobro">Cobro</option>
+                  <option value="Venta y Cobro">Venta y Cobro</option>
+                  <option value="Marketing">Marketing</option>
+                </select>
 
-              {/* <input type='file' className='form-control-file my-4' /> */}
-              <div className='d-flex flex-column'>
+                {/* <input type='file' className='form-control-file my-4' /> */}
 
-                <button className='btn btn-primary mt-2 ' onClick={onSubmit}>Visitado</button>
-                <Link to="/" className='btn btn-dark my-2'>Cancelar</Link>
-
-              </div>
-
+                <Stack>
+                  <Button onClick={onSubmit} colorPalette="blue">Visitado</Button>
+                  <Button><Link to="/" >Cancelar</Link></Button>
+                </Stack>
+              </Stack>
             </form>
           }
-          {envio && <div className='Cargando alert alert-primary'><div className="spinner-border" role="status"></div>Cargando...</div>}
-          {errorEnvio && <div className='Cargando alert alert-danger'>Error en el envio de los datos</div>}
-        </section >
-      </main>
 
-      <section className='FormularioTarea mt-5 mx-3'>
+
+          {envio &&
+            <VStack colorPalette="blue" p={4}>
+              <Spinner color="blue" />
+              <Text color="blue">Cargando...</Text>
+            </VStack>
+          }
+
+          {errorEnvio &&
+            <Alert.Root status="error" mt={3}>
+              <Alert.Indicator title="Faltan Datos" />
+              <Alert.Content>
+                <Alert.Title>Faltan Datos</Alert.Title>
+                <Alert.Description>
+                  El campo de decripcion de la visita o el motivo de la visita estan vacios.
+                </Alert.Description>
+              </Alert.Content>
+            </Alert.Root>
+          }
+        </section >
+      </Stack>
+
+      <Separator my={100}/>
+
+      <section>
 
         <InfoCliente idCliente={searchParams.get("idCliente")}></InfoCliente>
 
