@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import odooFetch from "../utils/odooFetch";
 
+import { Input, List } from "@chakra-ui/react";
 
 export const SelectDinamico = ({ agregarCliente }) => {
 
@@ -55,26 +56,24 @@ export const SelectDinamico = ({ agregarCliente }) => {
 
     return (
         <>
-            <input
+            <Input
                 type="text"
                 placeholder="Buscar Cliente"
                 onChange={(event) => onChange(event)}
-                className="form-control fw-bold"
             />
-            <ul className="list-group list-group-flush mt-3 pb-5">
+            <List.Root  m="5" cursor="pointer">
 
                 {listado && listado.map((item) => {
                     return (
-                        <li
+                        <List.Item
                             key={item.id}
                             onClick={() => onClick(item)}
-                            className="list-group-item"
                         >
                             {item.name}
-                        </li>
+                        </List.Item>
                     )
                 })}
-            </ul>
+            </List.Root>
         </>
     )
 }

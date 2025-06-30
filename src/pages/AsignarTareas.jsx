@@ -137,7 +137,12 @@ export const AsignarTareas = () => {
                         onClick={(event) => onSubmit(event)}
                         colorPalette="blue"
                     >Guardar</Button>
-                    <Button><Link to="/" >Cancelar</Link></Button>
+
+                    <Link to="/" >
+                        <Button w="100%">
+                            Cancelar
+                        </Button>
+                    </Link>
                 </Stack>
             </form>
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import odooFetch from "../utils/odooFetch"
+import { format } from "@formkit/tempo"
 
 export const useDataCliente = (idCliente) => {
 
@@ -25,7 +26,7 @@ export const useDataCliente = (idCliente) => {
     const fetchFacturas = {
         modelo: "account.move",
         filtro: [["partner_id", "=", parseInt(idCliente)], ["move_type", "=", "out_invoice"]],
-        columna: ["id", "invoice_date", "name", "partner_id", "amount_residual"]
+        columna: ["id", "invoice_date", "name", "partner_id", "amount_residual", "amount_untaxed_signed"]
     }
 
     const peticionDatosOdoo = async () => {
@@ -60,11 +61,21 @@ export const useDataCliente = (idCliente) => {
             categoriaCliente = "SIN CATEGORIA";
         }
 
+
+        //suma de ventas totales del año actual
+        let sumaVentaAnual = 0;
+        if (facturas) {
+            const facAnual = facturas.filter((factura) => format(factura.invoice_date, "YYYY") == format(new Date(), "YYYY"))
+            facAnual.forEach(factura => {
+                sumaVentaAnual = sumaVentaAnual + (factura.amount_untaxed_signed)
+            });
+        }
         //asigna los valores extraidos a una respuesta filtrada con lo necesario
         setdataCliente({
             ...dataCliente,
             categoria: categoriaCliente,
             "ultimo Pedido": ultimaFactura,
+            "vendido este periodo": sumaVentaAnual,
             cartera: carteraCliente,
             "x_prevision_line": infoClienteOdoo[0].x_prevision_line,
             "x_prevision_sport": infoClienteOdoo[0].x_prevision_sport,

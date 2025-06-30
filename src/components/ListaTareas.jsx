@@ -4,6 +4,9 @@ import { CardTarea } from './CardTarea';
 import { useFiltroClientes } from '../hooks/useFiltroClientes';
 import odooFetch from '../utils/odooFetch';
 
+
+import { Alert, VStack, Spinner, Text } from '@chakra-ui/react';
+
 export const ListaTareas = () => {
 
     const [nombresClientes, setnombresClientes] = useState([])
@@ -35,8 +38,13 @@ export const ListaTareas = () => {
     }
 
     return (
-        <section className='ListaTareas'>
-            {cargando && <div className='Cargando alert alert-primary'><div className="spinner-border" role="status"></div>Cargando...</div>}
+        <section>
+            {cargando &&
+                <VStack colorPalette="blue" p={4}>
+                    <Spinner color="blue" />
+                    <Text color="blue">Cargando...</Text>
+                </VStack>
+            }
 
             {
                 tareas && nombresClientes.length > 0 ? tareas.map((tarea) => {
@@ -45,14 +53,17 @@ export const ListaTareas = () => {
                 }) : null
             }
 
-            {tareas && tareas.length < 1 ?
-                <div className="alert alert-success" role="alert">
-                    <h4 className="alert-heading">Buen Trabajo!</h4>
-                    <p>Felicitaciones, estas al dia con tus tareas de clientes asignadas</p>
-                    
-                    <p className="mb-0">Es todo por ahora...</p>
-                </div>
-                : <p></p>}
-        </section>
+            {
+                tareas && tareas.length < 1 ?
+                    <Alert.Root status="success">
+                        <Alert.Indicator />
+                        <Alert.Content>
+                            <Alert.Title>Buen Trabajo!</Alert.Title>
+                            <Alert.Description>Felicitaciones, estas al dia con tus tareas de clientes asignadas</Alert.Description>
+                        </Alert.Content>
+                    </Alert.Root>
+                    : <p></p>
+            }
+        </section >
     )
 }

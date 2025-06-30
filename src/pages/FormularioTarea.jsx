@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { InfoCliente } from '../components/InfoCliente'
-import './FormularioTareas.css'
 import marcarTareaVisitado from '../utils/marcarVisitado'
+import { useTareaDatos } from '../hooks/useTareaDatos'
+
 
 import { Textarea, Button, Badge, Stack, Heading, Group, Separator, Alert, Spinner, Text, VStack } from '@chakra-ui/react'
+
 export const FormularioTarea = () => {
+
+  //React router botones navegacion y parametro URL
   let navigate = useNavigate();
   let [searchParams] = useSearchParams()
 
+  //estados para validacion de formulario
   const [envio, setenvio] = useState(false)
   const [errorEnvio, seterrorEnvio] = useState(false)
 
+  //peticion fecha y nombre de correria
+  const { tarea } = useTareaDatos(searchParams.get("tarea"));
 
-  const [idTarea, setidTarea] = useState()
+  //datos formulario
   const [formData, setformData] = useState({
     estadoVisita: "VISITADO",
     fechaVisita: 0,
@@ -21,6 +28,7 @@ export const FormularioTarea = () => {
     categoriaVisita: ""
   })
 
+  //llenado de formulario y actualizacion
   const onChangeForm = (e) => {
     const hoy = new Date()
     setformData({
@@ -30,21 +38,21 @@ export const FormularioTarea = () => {
     })
   }
 
-  useEffect(() => {
-    setidTarea(searchParams.get("tarea"))
-  }, []);
-
+  //validacion de formulario, estados de error y envio de formulario a supabase
   const onSubmit = async (event) => {
     setenvio(true)
     event.preventDefault();
+
+    //validacion campos vacios
     if (formData.DetalleVisita == "" || formData.categoriaVisita == "") {
       console.log("fallo")
       setenvio(false);
       seterrorEnvio(true);
       return
     }
-    const { error } = await marcarTareaVisitado(formData, idTarea)
 
+    //envio de formulario y verificacion de error en supabase
+    const { error } = await marcarTareaVisitado(formData, searchParams.get("tarea"))
 
     if (!error) {
       setenvio(false);
@@ -67,16 +75,18 @@ export const FormularioTarea = () => {
   return (
     <>
       <Stack m="5">
-        <Button>
-          <Link to="/">Volver</Link>
-        </Button>
-        <section className='FormularioTarea'>
+        <Link to="/">
+          <Button w="100%">
+            Volver
+          </Button>
+        </Link>
+        <section>
           <Stack>
             <Group>
               <Heading>{searchParams.get("cliente")}</Heading>
-              <Badge >25-junio</Badge>
+              {tarea && <Badge >{tarea[0].fechaLimite}</Badge>}
             </Group>
-            <Badge colorPalette="green" mb="4">Correria cali junio</Badge>
+            {tarea && <Badge colorPalette="green" mb="4">{tarea[0].nombreCorreria}</Badge>}
           </Stack>
 
 
@@ -86,12 +96,11 @@ export const FormularioTarea = () => {
 
                 <Textarea name="DetalleVisita" id=""
                   onChange={onChangeForm}
-                  className='form-control'
                   placeholder='Detalles de la visita'
                   rows={3}
                 ></Textarea>
 
-                <select name="categoriaVisita" id="" className='form-select mt-2' onChange={onChangeForm}>
+                <select name="categoriaVisita" id="" onChange={onChangeForm}>
                   <option value="">---tipo de visita---</option>
                   <option value="Venta">Venta</option>
                   <option value="Cobro">Cobro</option>
@@ -103,7 +112,11 @@ export const FormularioTarea = () => {
 
                 <Stack>
                   <Button onClick={onSubmit} colorPalette="blue">Visitado</Button>
-                  <Button><Link to="/" >Cancelar</Link></Button>
+                  <Link to="/" >
+                    <Button w="100%">
+                      Cancelar
+                    </Button>
+                  </Link>
                 </Stack>
               </Stack>
             </form>
@@ -131,7 +144,7 @@ export const FormularioTarea = () => {
         </section >
       </Stack>
 
-      <Separator my={100}/>
+      <Separator my={100} />
 
       <section>
 

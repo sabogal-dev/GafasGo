@@ -12,7 +12,12 @@ export const CardTarea = ({ tarea, cliente }) => {
 
     return (
         <>
-            <div className="CardTa" onClick={() => onClick(tarea.id)}>
+            <Stack
+            _hover={{ bg: "blue.50" }}
+            mb="2" 
+            className="CardTarea" 
+            onClick={() => onClick(tarea.id)}
+            >
 
                 <Flex justify="space-between">
                     <Group>
@@ -32,7 +37,7 @@ export const CardTarea = ({ tarea, cliente }) => {
                     </Group>
 
                 </Flex>
-            </div>
+            </Stack>
 
         </>
     )
