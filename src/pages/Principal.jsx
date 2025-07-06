@@ -9,7 +9,7 @@ export const Principal = () => {
 
     const navigate = useNavigate();
 
-    let usuario = localStorage.getItem('user');
+    let usuario = parseInt(localStorage.getItem('user'));
 
     const verificarUsuario = (user) => {
         if (user) {
@@ -22,16 +22,24 @@ export const Principal = () => {
     useEffect(() => {
         verificarUsuario(usuario)
     }, [])
-
     return (
         <Stack m="5">
             <Flex justify="space-between">
+                {usuario === 4 &&
+                    <Group>
+                        <Link to="/Asignar">
+                            <Button w="100%">
+                                Ir a Asignar
+                            </Button>
+                        </Link>
+                        <Link to="/admin">
+                        <Button w="100%">
+                            Panel Administrativo
+                        </Button>
+                    </Link>
+                    </Group>
 
-                <Link to="/Asignar">
-                    <Button w="100%">
-                        Ir a Asignar
-                    </Button>
-                </Link>
+                }
 
                 <Link to="/login">
                     <Avatar.Root cursor="pointer">

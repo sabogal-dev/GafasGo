@@ -35,6 +35,14 @@ export const InfoCliente = ({ idCliente }) => {
           </Table.Header>
           <Table.Body>
             <Table.Row>
+              <Table.Cell>Direccion</Table.Cell>
+              <Table.Cell>{dataCliente.direccion} / {dataCliente.ciudad}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>Contacto</Table.Cell>
+              <Table.Cell>{dataCliente.telefono}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
               <Table.Cell>Ultima visita</Table.Cell>
               <Table.Cell>{dataCliente["ultima Visita"]}</Table.Cell>
             </Table.Row>

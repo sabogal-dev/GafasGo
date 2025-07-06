@@ -6,11 +6,15 @@ import odooFetch from '../utils/odooFetch';
 
 
 import { Alert, VStack, Spinner, Text } from '@chakra-ui/react';
+import { format } from '@formkit/tempo';
 
 export const ListaTareas = () => {
 
-    const [nombresClientes, setnombresClientes] = useState([])
-    const [cargando, setcargando] = useState(true)
+    const usuario = parseInt(localStorage.getItem('user'))
+    const estados = ['NO VISITADO', 'REAGENDADO']; 
+    const [fecha, setfecha] = useState(format(new Date(), "YYYY-MM-DD", "en"));
+    const [nombresClientes, setnombresClientes] = useState([]);
+    const [cargando, setcargando] = useState(true);
 
     const [peticion, setpeticion] = useState({
         modelo: "res.partner",
@@ -18,7 +22,7 @@ export const ListaTareas = () => {
         columna: ["id", "name", "vat"]
     })
 
-    const { tareas } = useTareas();
+    const { tareas } = useTareas({ usuario, fecha, estados });
 
     const { clientes } = useFiltroClientes(tareas)//extraer solo los ids de las tareas para poder llamar nombre API ODOO
 

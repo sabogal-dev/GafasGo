@@ -9,16 +9,17 @@ import { Principal } from './pages/Principal';
 import { AsignarTareas } from './pages/AsignarTareas';
 import { FormularioTarea } from './pages/FormularioTarea';
 import { Login } from './pages/Login';
-
+import { Administrativo } from './pages/Administrativo';
 createRoot(document.getElementById('root')).render(
   // <StrictMode>
   <Provider>
     <BrowserRouter basename="/gafasGo">
       <Routes>
         <Route path='/' element={<Principal />}> </Route>
+        <Route path='/login' element={<Login/>}></Route>
+        <Route path='/admin' element={<Administrativo/>}  ></Route>
         <Route path='/Asignar' element={<AsignarTareas />}> </Route>
         <Route path='/FormTarea' element={<FormularioTarea />}></Route>
-        <Route path='/login' element={<Login/>}></Route>
       </Routes>
     </BrowserRouter>
   </Provider>

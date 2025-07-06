@@ -16,7 +16,7 @@ export const useDataCliente = (idCliente) => {
     const fetchCliente = {
         modelo: "res.partner",
         filtro: [["id", "=", idCliente]],
-        columna: ["id", "name", "vat", "category_id", "x_prevision_line", "x_prevision_sport", "x_prevision_petite", "x_prevision_premium", "x_prevision_oh", "x_prevision_tonelly", "x_prevision_forzanny"]
+        columna: ["id", "name", "street", "city", "mobile", "phone", "vat", "category_id", "x_prevision_line", "x_prevision_sport", "x_prevision_petite", "x_prevision_premium", "x_prevision_oh", "x_prevision_tonelly", "x_prevision_forzanny"]
     }
     let fetchCategorias = {
         modelo: "res.partner.category",
@@ -73,6 +73,9 @@ export const useDataCliente = (idCliente) => {
         //asigna los valores extraidos a una respuesta filtrada con lo necesario
         setdataCliente({
             ...dataCliente,
+            ciudad: infoClienteOdoo[0].city,
+            direccion: infoClienteOdoo[0].street,
+            telefono: infoClienteOdoo[0].mobile + "   /   " + infoClienteOdoo[0].phone,
             categoria: categoriaCliente,
             "ultimo Pedido": ultimaFactura,
             "vendido este periodo": sumaVentaAnual,

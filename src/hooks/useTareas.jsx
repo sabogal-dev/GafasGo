@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../utils/supabase'
 
 
-export const useTareas = () => {
+export const useTareas = ({ usuario, fecha, estados }) => {
 
     const [tareas, setTareas] = useState()
-
+    let user = usuario;
+    if (user == 4) {
+        user = "1,2,3"
+    }
     useEffect(() => {
         fetchTareas();
     }, [])
@@ -14,7 +17,9 @@ export const useTareas = () => {
         let { data: tareas, error } = await supabase
             .from('tarea')
             .select('*')
-            .in('estadoVisita', ['NO VISITADO', 'REAGENDADO'])
+            .in('estadoVisita', estados)
+            .filter('id_vendedor', 'in', `(${user})`)
+            .gte('fechaLimite', fecha)
         setTareas(tareas)
     }
 
