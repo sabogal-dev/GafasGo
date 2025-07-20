@@ -3,7 +3,6 @@ import { Input, Select, Portal, createListCollection, Group, Field, Stack, Butto
 import { addDay, format } from '@formkit/tempo'
 import { TareasAdministrativo } from '../components/TareasAdministrativo'
 
-
 import { Link } from 'react-router'
 
 const perfiles = createListCollection({
@@ -80,7 +79,7 @@ export const Administrativo = () => {
         </Group>
       </form>
 
-      
+
       <TareasAdministrativo filtro={filtros}></TareasAdministrativo>
     </Stack>
   )

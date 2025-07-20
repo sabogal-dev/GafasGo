@@ -31,11 +31,31 @@ export const FormularioTarea = () => {
   //llenado de formulario y actualizacion
   const onChangeForm = (e) => {
     const hoy = new Date()
+    if (e.target.name == "categoriaVisita" && e.target.value == "Reagendado") {
+      setformData({
+        ...formData,
+        [e.target.name]: e.target.value,
+        estadoVisita: "REAGENDADO",
+        fechaVisita: hoy
+      })
+      return
+    }
+    else if (e.target.name == "categoriaVisita" && e.target.value !== "Reagendado") {
+      setformData({
+        ...formData,
+        [e.target.name]: e.target.value,
+        estadoVisita: "VISITADO",
+        fechaVisita: hoy
+      })
+      return
+    }
+
     setformData({
       ...formData,
       [e.target.name]: e.target.value,
       fechaVisita: hoy
     })
+
   }
 
   //validacion de formulario, estados de error y envio de formulario a supabase
@@ -50,7 +70,6 @@ export const FormularioTarea = () => {
       seterrorEnvio(true);
       return
     }
-
     //envio de formulario y verificacion de error en supabase
     const { error } = await marcarTareaVisitado(formData, searchParams.get("tarea"))
 
@@ -63,7 +82,6 @@ export const FormularioTarea = () => {
       }, 300);
     }
 
-
     else {
       setenvio(false);
       seterrorEnvio(true);
@@ -71,6 +89,9 @@ export const FormularioTarea = () => {
 
   }
 
+  const onRegendar = () => {
+
+  }
 
   return (
     <>
@@ -106,12 +127,18 @@ export const FormularioTarea = () => {
                   <option value="Cobro">Cobro</option>
                   <option value="Venta y Cobro">Venta y Cobro</option>
                   <option value="Marketing">Marketing</option>
+                  <option value="cliente no Disponible">cliente no Disponible</option>
+                  <option value="Reagendado">Reagendado</option>
                 </select>
 
                 {/* <input type='file' className='form-control-file my-4' /> */}
 
                 <Stack>
-                  <Button onClick={onSubmit} colorPalette="blue">Visitado</Button>
+                  {
+                    formData.estadoVisita == "REAGENDADO" ?
+                      <Button onClick={onSubmit} colorPalette="teal" >Reagendar</Button> :
+                      <Button onClick={onSubmit} colorPalette="blue">Visitado</Button>
+                  }
                   <Link to="/" >
                     <Button w="100%">
                       Cancelar

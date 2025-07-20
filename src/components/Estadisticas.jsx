@@ -26,7 +26,7 @@ export const Estadisticas = ({ tareas, fecha }) => {
                 <Card.Root variant="elevated" w={200}>
                     <Card.Body >
                         <Card.Title >{visitados} Clientes </Card.Title>
-                        <Card.Description>Visitados  -  <Badge colorPalette="green"> ({(visitados / tareas.length) * 100})%</Badge></Card.Description>
+                        <Card.Description>Visitados  -  <Badge colorPalette="green"> ({((visitados / tareas.length) * 100).toFixed(2)})%</Badge></Card.Description>
                     </Card.Body>
                 </Card.Root>
 
