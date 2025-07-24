@@ -130,6 +130,7 @@ export const AsignarTareas = () => {
                         )
                     })}
                 </List.Root>
+                <SelectDinamico agregarCliente={handleClickCliente}></SelectDinamico>
 
                 <Stack gap={2}>
                     <Button
@@ -146,7 +147,6 @@ export const AsignarTareas = () => {
                 </Stack>
             </form>
 
-            <SelectDinamico agregarCliente={handleClickCliente}></SelectDinamico>
         </Stack>
     )
 }

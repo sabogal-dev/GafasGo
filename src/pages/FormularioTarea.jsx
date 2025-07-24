@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router'
 import { InfoCliente } from '../components/InfoCliente'
 import marcarTareaVisitado from '../utils/marcarVisitado'
 import { useTareaDatos } from '../hooks/useTareaDatos'
-
+import { envioWhatsapp } from '../utils/whatsapp'
 
 import { Textarea, Button, Badge, Stack, Heading, Group, Separator, Alert, Spinner, Text, VStack } from '@chakra-ui/react'
 
@@ -62,7 +62,8 @@ export const FormularioTarea = () => {
   const onSubmit = async (event) => {
     setenvio(true)
     event.preventDefault();
-
+    // envioWhatsapp(`Cliente : ${searchParams.get("cliente")}\n visita Categoria : ${formData.categoriaVisita} \n \n Detalle Visita : ${formData.DetalleVisita}`)
+    
     //validacion campos vacios
     if (formData.DetalleVisita == "" || formData.categoriaVisita == "") {
       console.log("fallo")
@@ -72,11 +73,12 @@ export const FormularioTarea = () => {
     }
     //envio de formulario y verificacion de error en supabase
     const { error } = await marcarTareaVisitado(formData, searchParams.get("tarea"))
-
+    
     if (!error) {
       setenvio(false);
       seterrorEnvio(false)
-
+      envioWhatsapp(`Cliente : ${searchParams.get("cliente")}\n Tipo Visita : ${formData.categoriaVisita} \n \n Detalle Visita : ${formData.DetalleVisita}`)
+      
       setTimeout(() => {
         navigate("/")
       }, 300);

@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route, Form } from 'react-router';
+import { BrowserRouter, Routes, Route, Form, HashRouter } from 'react-router';
 //CHAKRA UI
 import { Provider } from './components/ui/provider';
 
@@ -13,7 +13,7 @@ import { Administrativo } from './pages/Administrativo';
 createRoot(document.getElementById('root')).render(
   // <StrictMode>
   <Provider>
-    <BrowserRouter basename="/gafasGo">
+    <HashRouter >
       <Routes>
         <Route path='/' element={<Principal />}> </Route>
         <Route path='/login' element={<Login/>}></Route>
@@ -21,7 +21,7 @@ createRoot(document.getElementById('root')).render(
         <Route path='/Asignar' element={<AsignarTareas />}> </Route>
         <Route path='/FormTarea' element={<FormularioTarea />}></Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </Provider>
   // </StrictMode>,
 )
