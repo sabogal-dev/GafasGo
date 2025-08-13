@@ -62,7 +62,6 @@ export const FormularioTarea = () => {
   const onSubmit = async (event) => {
     setenvio(true)
     event.preventDefault();
-    // envioWhatsapp(`Cliente : ${searchParams.get("cliente")}\n visita Categoria : ${formData.categoriaVisita} \n \n Detalle Visita : ${formData.DetalleVisita}`)
     
     //validacion campos vacios
     if (formData.DetalleVisita == "" || formData.categoriaVisita == "") {
@@ -88,10 +87,6 @@ export const FormularioTarea = () => {
       setenvio(false);
       seterrorEnvio(true);
     }
-
-  }
-
-  const onRegendar = () => {
 
   }
 
@@ -131,6 +126,7 @@ export const FormularioTarea = () => {
                   <option value="Marketing">Marketing</option>
                   <option value="cliente no Disponible">cliente no Disponible</option>
                   <option value="Reagendado">Reagendado</option>
+                  <option value="Prospecto">Prospecto</option>
                 </select>
 
                 {/* <input type='file' className='form-control-file my-4' /> */}

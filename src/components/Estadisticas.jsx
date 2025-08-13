@@ -1,4 +1,5 @@
 import React from 'react'
+import { DonutChart } from './EstadisticaChart/DonutChart';
 import { diffDays } from '@formkit/tempo';
 
 import { Card, Group, Badge, TextareaPropsProvider } from '@chakra-ui/react';
@@ -6,9 +7,13 @@ import { Card, Group, Badge, TextareaPropsProvider } from '@chakra-ui/react';
 export const Estadisticas = ({ tareas, fecha }) => {
 
     let visitados = 0;
+    let reagendados = 0;
     tareas.forEach(tarea => {
         if (tarea.estadoVisita == "VISITADO") {
             visitados += 1;
+        }
+        else if (tarea.estadoVisita == "REAGENDADO") {
+            reagendados += 1;
         }
     });
     return (
@@ -36,6 +41,14 @@ export const Estadisticas = ({ tareas, fecha }) => {
                         <Card.Description>asignadas</Card.Description>
                     </Card.Body>
                 </Card.Root>
+
+                <Group>
+                    <Card.Root variant="elevated" w={300}>
+                        <Card.Body >
+                            <DonutChart visitados={visitados} reagendados={reagendados} tareas={tareas.length}></DonutChart>
+                        </Card.Body>
+                    </Card.Root>
+                </Group>
             </Group>
         </>
     )

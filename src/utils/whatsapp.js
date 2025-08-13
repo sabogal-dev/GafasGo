@@ -1,7 +1,6 @@
 export function envioWhatsapp(mensaje) {
-
     const body = {
-        "number": "573188480490",
+        "number": "120363372728056229@g.us",
         "message": mensaje
     }
     try {
