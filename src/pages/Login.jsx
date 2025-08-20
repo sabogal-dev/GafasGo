@@ -6,7 +6,7 @@ const perfiles = createListCollection({
     items: [
         { label: "JORGE", value: "1" },
         { label: "YESID", value: "2" },
-        { label: "DANIEL", value: "3" },
+        { label: "SANTIAGO", value: "3" },
         { label: "ADMIN", value: "4"}
     ],
 })
@@ -14,7 +14,7 @@ const perfiles = createListCollection({
 const usuarios = [
     { usuario: 1, clave: "jorge" },
     { usuario: 2, clave: "yesid" },
-    { usuario: 3, clave: "daniel" },
+    { usuario: 3, clave: "santiago" },
     { usuario: 4, clave: "codeoptikal" }
 ]
 

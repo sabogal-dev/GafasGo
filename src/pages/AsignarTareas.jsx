@@ -55,7 +55,7 @@ export const AsignarTareas = () => {
         items: [
             { label: "JORGE", value: "1" },
             { label: "YESID", value: "2" },
-            { label: "DANIEL", value: "3" },
+            { label: "SANTIAGO", value: "3" },
         ],
     })
 

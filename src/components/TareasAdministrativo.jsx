@@ -40,13 +40,14 @@ export const TareasAdministrativo = ({ filtro }) => {
 
 
 //funciones
-const fetchTareas = async ({ vendedor = "1,2,3", fecha, estados }) => {
+const fetchTareas = async ({ vendedor = "1,2,3", fecha,fechaFin,  estados }) => {
     let { data: tareas, error } = await supabase
         .from('tarea')
         .select('*')
         .in('estadoVisita', estados)
         .filter('id_vendedor', 'in', `(${vendedor})`)
         .gte('fechaLimite', fecha)
+        .lte("fechaLimite", fechaFin )
     const listaTareas = tareas;
 
 

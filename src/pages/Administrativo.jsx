@@ -9,7 +9,7 @@ const perfiles = createListCollection({
   items: [
     { label: "JORGE", value: "1" },
     { label: "YESID", value: "2" },
-    { label: "DANIEL", value: "3" },
+    { label: "SANTIAGO", value: "3" },
     { label: "TODOS", value: "1,2,3" }
   ],
 })
@@ -20,7 +20,7 @@ export const Administrativo = () => {
   const [filtros, setfiltros] = useState({
     usuario: "1,2,3",
     fecha: format(addDay(new Date(), -30), "YYYY-MM-DD", "en"),
-    fechaFin: "",
+    fechaFin: format(addDay(new Date(), 60), "YYYY-MM-DD", "en"),
     estados: ['NO VISITADO', 'REAGENDADO', 'VISITADO']
   })
 
@@ -75,6 +75,10 @@ export const Administrativo = () => {
           <Field.Root >
             <Field.Label>Fecha</Field.Label>
             <Input type='date' name='fecha' onChange={onChange}></Input>
+          </Field.Root>
+          <Field.Root >
+            <Field.Label>Fecha Fin</Field.Label>
+            <Input type='date' name='fechaFin' onChange={onChange} min={filtros.fecha}></Input>
           </Field.Root>
         </Group>
       </form>

@@ -3,7 +3,7 @@ import { Table, Badge } from "@chakra-ui/react"
 import { format } from '@formkit/tempo'
 import { ButtonExportarExcel } from './ButtonExportarExcel'
 
-const vendedores = ["JORGE", "YESID", "DANIEL"]
+const vendedores = ["JORGE", "YESID", "SANTIAGO"]
 export const TablaInforme = ({ tareas, clientes }) => {
 
 
