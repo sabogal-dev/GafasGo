@@ -1,5 +1,5 @@
 export default async function odooFetch(peticion) {
-    const respuesta = await fetch("https://sabogal.top/apiOdoo", {
+    const respuesta = await fetch("https://servicios.codeoptikal.com/apiOdoo", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

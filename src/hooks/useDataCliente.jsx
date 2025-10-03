@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import odooFetch from "../utils/odooFetch"
 import { format } from "@formkit/tempo"
-
+import ultimaVisita from "../utils/ultimaVisita"
 export const useDataCliente = (idCliente) => {
 
     const [cargando, setcargando] = useState(true)
@@ -16,7 +16,7 @@ export const useDataCliente = (idCliente) => {
     const fetchCliente = {
         modelo: "res.partner",
         filtro: [["id", "=", idCliente]],
-        columna: ["id", "name", "street", "city", "mobile", "phone", "vat", "category_id", "x_prevision_line", "x_prevision_sport", "x_prevision_petite", "x_prevision_premium", "x_prevision_oh", "x_prevision_tonelly", "x_prevision_forzanny"]
+        columna: ["id", "name", "street", "city", "mobile", "phone", "vat", "category_id", "x_prevision_line", "x_prevision_sport", "x_prevision_petite", "x_prevision_premium", "x_prevision_oh", "x_prevision_tonelly", "x_prevision_forzanny", "comment"]
     }
     let fetchCategorias = {
         modelo: "res.partner.category",
@@ -28,7 +28,11 @@ export const useDataCliente = (idCliente) => {
         filtro: [["partner_id", "=", parseInt(idCliente)], ["move_type", "=", "out_invoice"]],
         columna: ["id", "invoice_date", "name", "partner_id", "amount_residual", "amount_untaxed_signed"]
     }
-
+    const fetchCarteraFacturas = {
+        modelo: "account.move",
+        filtro: ["&", ["move_type", "=", "out_invoice"], "&", ["payment_state", "!=", "paid"], ["partner_id", "=", parseInt(idCliente)]],
+        columna: ["id", "name", "partner_id", "move_type", "amount_untaxed_signed", "amount_residual_signed", "invoice_date_due", "payment_state", "invoice_date"]
+    }
     const peticionDatosOdoo = async () => {
 
         let carteraCliente = 0;
@@ -36,8 +40,16 @@ export const useDataCliente = (idCliente) => {
         const infoClienteOdoo = await odooFetch(fetchCliente)
         const categorias = await odooFetch(fetchCategorias)
         const facturas = await odooFetch(fetchFacturas)
+        const facturasCartera = await odooFetch(fetchCarteraFacturas)
         let ultimaFactura = ""
 
+        let visitado = await ultimaVisita(idCliente)
+        if (visitado.data) {
+            visitado = visitado.data.fechaVisita
+        }
+        else {
+            visitado = "Sin info"
+        }
         //ultima factura
         if (facturas[0]) {
             ultimaFactura = facturas[0].invoice_date
@@ -78,15 +90,18 @@ export const useDataCliente = (idCliente) => {
             telefono: infoClienteOdoo[0].mobile + "   /   " + infoClienteOdoo[0].phone,
             categoria: categoriaCliente,
             "ultimo Pedido": ultimaFactura,
+            "ultima Visita": visitado,
             "vendido este periodo": sumaVentaAnual,
             cartera: carteraCliente,
+            "notas": infoClienteOdoo[0].comment,
             "x_prevision_line": infoClienteOdoo[0].x_prevision_line,
             "x_prevision_sport": infoClienteOdoo[0].x_prevision_sport,
             "x_prevision_petite": infoClienteOdoo[0].x_prevision_petite,
             "x_prevision_premium": infoClienteOdoo[0].x_prevision_premium,
             "x_prevision_oh": infoClienteOdoo[0].x_prevision_oh,
             "x_prevision_tonelly": infoClienteOdoo[0].x_prevision_tonelly,
-            "x_prevision_forzanny": infoClienteOdoo[0].x_prevision_forzanny
+            "x_prevision_forzanny": infoClienteOdoo[0].x_prevision_forzanny,
+            facturasCartera:facturasCartera
         })
 
         setcargando(false)

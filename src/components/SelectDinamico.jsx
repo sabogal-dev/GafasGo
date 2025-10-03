@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import odooFetch from "../utils/odooFetch";
 
-import { Input, List } from "@chakra-ui/react";
+import { IoPerson } from "react-icons/io5";
+import { Button, Group, Input, List, Stack } from "@chakra-ui/react";
 
 export const SelectDinamico = ({ agregarCliente }) => {
 
@@ -10,31 +11,22 @@ export const SelectDinamico = ({ agregarCliente }) => {
     const [listado, setlistado] = useState([])//listado dinamico del select
     const [clientes, setclientes] = useState([])//listado llamado de la API
 
-    const [peticion, setpeticion] = useState({
-        modelo: "res.partner",
-        filtro: [["name", "ilike", ""]],
-        columna: ["id", "name", "vat"]
-    })
-    
-    const onChange = (e) => {
-        setbusqueda(e.target.value.toLocaleLowerCase());
-    }
-
-    //llamar la api para buscar clientes
-    useEffect(() => {
-        setpeticion({ ...peticion, filtro: [["name", "ilike", busqueda]] })
-        cargarApi()
-    }, [busqueda])
-
+    const [cargando, setcargando] = useState(false)
     //mostrar lista dinamica solo con los datos filtrados del input
     useEffect(() => {
         actualizarListado();
     }, [clientes])
 
-
-
     const cargarApi = async () => {
-        let asignar = await odooFetch(peticion) 
+        if (busqueda.length < 2) {
+            return
+        }
+        setcargando(true)
+        let asignar = await odooFetch({
+            modelo: "res.partner",
+            filtro: [["name", "ilike", busqueda]],
+            columna: ["id", "name", "vat"]
+        })
         asignar = asignar.slice(0, 20)
         setclientes(asignar);
     }
@@ -45,30 +37,46 @@ export const SelectDinamico = ({ agregarCliente }) => {
             setlistado([])
             return
         }
-        const filtrado = clientes.filter((item) => item.name.toLocaleLowerCase().includes(busqueda));
+        setcargando(false)
+        const filtrado = clientes.filter((item) => item.name.toLocaleLowerCase().includes(busqueda.toLocaleLowerCase()));
         setlistado(filtrado)
     }
 
-    const onClick = (nombre) => {
+    const onClickCliente = (nombre) => {
         agregarCliente(nombre)
         setbusqueda("")
     }
 
     return (
         <>
-            <Input
-                type="text"
-                placeholder="Buscar Cliente"
-                onChange={(event) => onChange(event)}
-            />
-            <List.Root  m="5" cursor="pointer">
+            <Group width={"100%"}>
+
+                <Input
+                    type="text"
+                    placeholder="Buscar Cliente"
+                    onChange={(e) => { setbusqueda(e.target.value) }}
+                />
+                {cargando ?
+                    <Button onClick={cargarApi} loading>
+                        Buscar
+                    </Button>
+                    :
+                    <Button onClick={cargarApi}>
+                        Buscar
+                    </Button>
+                }
+            </Group>
+            <List.Root m="5" cursor="pointer" variant={"plain"} gap={5}>
 
                 {listado && listado.map((item) => {
                     return (
                         <List.Item
                             key={item.id}
-                            onClick={() => onClick(item)}
+                            onClick={() => onClickCliente(item)}
                         >
+                            <List.Indicator asChild color="green.500">
+                                <IoPerson  />
+                            </List.Indicator>
                             {item.name}
                         </List.Item>
                     )

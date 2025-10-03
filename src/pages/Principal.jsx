@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { ListaTareas } from '../components/ListaTareas'
+import { MenuLateral } from '../components/MenuLateral'
 import { Link, useNavigate } from 'react-router'
 
 import { Heading, Button, Icon, Stack, Group, Avatar, Flex } from '@chakra-ui/react'
@@ -24,29 +25,9 @@ export const Principal = () => {
     }, [])
     return (
         <Stack m="5">
-            <Flex justify="space-between">
-                {usuario === 4 &&
-                    <Group>
-                        <Link to="/Asignar">
-                            <Button w="100%">
-                                Ir a Asignar
-                            </Button>
-                        </Link>
-                        <Link to="/admin">
-                        <Button w="100%">
-                            Panel Administrativo
-                        </Button>
-                    </Link>
-                    </Group>
-
-                }
-
-                <Link to="/login">
-                    <Avatar.Root cursor="pointer">
-                        <Avatar.Fallback />
-                    </Avatar.Root>
-                </Link>
-            </Flex>
+            <Stack align="end">
+                <MenuLateral usuario={usuario}></MenuLateral>
+            </Stack>
             <Group>
                 <Icon size="lg"><FaListCheck /></Icon>
                 <Heading>Lista de Pendientes</Heading>

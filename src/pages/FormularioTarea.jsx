@@ -62,7 +62,7 @@ export const FormularioTarea = () => {
   const onSubmit = async (event) => {
     setenvio(true)
     event.preventDefault();
-    
+
     //validacion campos vacios
     if (formData.DetalleVisita == "" || formData.categoriaVisita == "") {
       console.log("fallo")
@@ -72,12 +72,17 @@ export const FormularioTarea = () => {
     }
     //envio de formulario y verificacion de error en supabase
     const { error } = await marcarTareaVisitado(formData, searchParams.get("tarea"))
-    
+
     if (!error) {
       setenvio(false);
       seterrorEnvio(false)
-      envioWhatsapp(`Cliente : ${searchParams.get("cliente")}\n Tipo Visita : ${formData.categoriaVisita} \n \n Detalle Visita : ${formData.DetalleVisita}`)
-      
+      try {
+
+        envioWhatsapp(`Cliente : ${searchParams.get("cliente")}\n Tipo Visita : ${formData.categoriaVisita} \n \n Detalle Visita : ${formData.DetalleVisita}`)
+      }
+      catch (falloEnvio) {
+        console.log("erro de envio de mensaje whatsapp : " + falloEnvio)
+      }
       setTimeout(() => {
         navigate("/")
       }, 300);

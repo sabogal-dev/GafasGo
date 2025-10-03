@@ -61,15 +61,21 @@ export const AsignarTareas = () => {
 
 
     return (
-        <Stack m="5">
+        <Stack m="5" maxWidth={"375px"} height={"90vh"}>
+            
             <Group>
+                    <Link to="/">
+                        <Button colorPalette={"red"}>
+                            Volver
+                        </Button>
+                    </Link>
 
                 <Icon size="lg"><PiPencilLineBold /></Icon>
                 <Heading>Asignar Tareas</Heading>
             </Group>
-            <form className="">
+            <form>
 
-                <Select.Root collection={listVendedores} size="sm" width="320px"
+                <Select.Root collection={listVendedores} size="sm"
                     name="id_vendedor"
                     onChange={onChangeForm}
                 >
@@ -132,18 +138,21 @@ export const AsignarTareas = () => {
                 </List.Root>
                 <SelectDinamico agregarCliente={handleClickCliente}></SelectDinamico>
 
-                <Stack gap={2}>
+                <Stack
+                    position={"fixed"}
+                    bottom={0}
+                    left={0}
+                    width={"100%"}
+                    gap={2}
+
+                >
                     <Button
-                        type="submit"
+                    m={5}
+                        type="button"
                         onClick={(event) => onSubmit(event)}
                         colorPalette="blue"
                     >Guardar</Button>
 
-                    <Link to="/" >
-                        <Button w="100%">
-                            Cancelar
-                        </Button>
-                    </Link>
                 </Stack>
             </form>
 

@@ -1,5 +1,5 @@
 const perfiles = [
-    { user: "JORGE", value: "1", IDgrupo: "120363372728056229@g.us" },
+    { user: "JORGE", value: "1", IDgrupo: "573184191175-1602193618@g.us"},
     { user: "YESID", value: "2", IDgrupo: "120363372728056229@g.us" },
     { user: "SANTIAGO", value: "3", IDgrupo: "573184191175-1602193495@g.us" },
     { user: "ADMIN", value: "4", IDgrupo: "120363372728056229@g.us" }

@@ -1,11 +1,11 @@
 import { format } from '@formkit/tempo'
 import { useDataCliente } from '../hooks/useDataCliente'
 
-import { VStack, Spinner, Text, Table, Stack, Alert, Badge } from '@chakra-ui/react'
+import { VStack, Spinner, Text, Table, Stack, Alert, Badge, Box } from '@chakra-ui/react'
 
 export const InfoCliente = ({ idCliente }) => {
 
-  const { dataCliente, cargando } = useDataCliente(idCliente)
+  const { dataCliente, cargando } = useDataCliente(idCliente);
 
   return (
     <>
@@ -59,11 +59,54 @@ export const InfoCliente = ({ idCliente }) => {
               <Table.Cell><Badge colorPalette="green">$ {dataCliente["vendido este periodo"].toLocaleString("es-ES")}</Badge></Table.Cell>
             </Table.Row>
             <Table.Row>
+              <Table.Cell>Notas</Table.Cell>
+              <Table.Cell><Box dangerouslySetInnerHTML={{ __html: dataCliente["notas"] }} /></Table.Cell>
+            </Table.Row>
+            <Table.Row>
               <Table.Cell>Cartera</Table.Cell>
               <Table.Cell>$ {dataCliente["cartera"].toLocaleString("es-ES")}</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table.Root>
+
+
+        <Alert.Root status="info">
+          <Alert.Indicator />
+          <Alert.Content>
+            <Alert.Title>Detalla de facturas por pagar</Alert.Title>
+          </Alert.Content>
+        </Alert.Root>
+
+        <Table.Root variant="outline" >
+          <Table.Header>
+            <Table.Row>
+              <Table.ColumnHeader textAlign={"center"}>#FAC</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign={"center"}>fecha</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign={"center"}>vence</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign={"center"}>total</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign={"center"}>Saldo</Table.ColumnHeader>
+            </Table.Row>
+          </Table.Header>
+
+          <Table.Body>
+            {
+              dataCliente["facturasCartera"] && dataCliente["facturasCartera"].map(factura => {
+                console.log(factura.name)
+                return (
+                  <Table.Row key={factura.name}>
+                    <Table.Cell>{factura.name}</Table.Cell>
+                    <Table.Cell textAlign={"center"}>{format(factura.invoice_date, "DD MMM")}</Table.Cell>
+                    <Table.Cell textAlign={"center"}>{format(factura.invoice_date_due, "DD MMM")}</Table.Cell>
+                    <Table.Cell>{factura.amount_residual_signed.toLocaleString("es-ES")}</Table.Cell>
+                    <Table.Cell>{factura.amount_residual_signed.toLocaleString("es-ES")}</Table.Cell>
+
+                  </Table.Row>
+                )
+              })
+            }
+          </Table.Body>
+        </Table.Root>
+
 
         <Alert.Root status="warning">
           <Alert.Indicator />
@@ -109,7 +152,7 @@ export const InfoCliente = ({ idCliente }) => {
             </Table.Row>
           </Table.Body>
         </Table.Root>
-      </Stack>}
+      </Stack >}
     </>
   )
 }

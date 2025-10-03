@@ -1,9 +1,26 @@
 import React, { useState } from 'react'
-import { Input, Select, Portal, createListCollection, Group, Field, Stack, Button } from '@chakra-ui/react'
+import {
+  Input,
+  Select,
+  Portal,
+  createListCollection,
+  Group,
+  Field,
+  Stack,
+  Button,
+  useBreakpointValue,
+  Box,
+} from '@chakra-ui/react'
 import { addDay, format } from '@formkit/tempo'
 import { TareasAdministrativo } from '../components/TareasAdministrativo'
-
 import { Link } from 'react-router'
+
+// Chakra UI responsive styles documentation:
+// - useBreakpointValue: https://chakra-ui.com/docs/hooks/use-breakpoint-value
+// - Box: https://chakra-ui.com/docs/components/layout/box
+// - Stack: https://chakra-ui.com/docs/components/layout/stack
+// - Group: Custom or from Chakra UI (if not, replace with Flex/Box)
+// - Select: https://chakra-ui.com/docs/components/select
 
 const perfiles = createListCollection({
   items: [
@@ -14,9 +31,7 @@ const perfiles = createListCollection({
   ],
 })
 
-
 export const Administrativo = () => {
-
   const [filtros, setfiltros] = useState({
     usuario: "1,2,3",
     fecha: format(addDay(new Date(), -30), "YYYY-MM-DD", "en"),
@@ -24,19 +39,19 @@ export const Administrativo = () => {
     estados: ['NO VISITADO', 'REAGENDADO', 'VISITADO']
   })
 
+  // Responsive width for Select
+  const selectWidth = useBreakpointValue({ base: "100%", sm: "320px" })
+
   const onChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
     setfiltros({
       ...filtros,
       [name]: value
     })
   }
 
-
-
   return (
-
-    <Stack m={5}>
+    <Stack m={5} spacing={6}>
       <Group>
         <Link to="/">
           <Button>
@@ -45,46 +60,53 @@ export const Administrativo = () => {
         </Link>
       </Group>
 
-      <form >
-        <Group>
-          <Select.Root collection={perfiles} size="sm" width="320px" name='vendedor' onChange={onChange}>
-            <Select.HiddenSelect />
-            <Select.Label>Seleccion vendedor</Select.Label>
-            <Select.Control>
-              <Select.Trigger>
-                <Select.ValueText placeholder="Usuario" />
-              </Select.Trigger>
-              <Select.IndicatorGroup>
-                <Select.Indicator />
-              </Select.IndicatorGroup>
-            </Select.Control>
-            <Portal>
-              <Select.Positioner>
-                <Select.Content>
-                  {perfiles.items.map((item) => (
-                    <Select.Item item={item} key={item.value}>
-                      {item.label}
-                      <Select.ItemIndicator />
-                    </Select.Item>
-                  ))}
-                </Select.Content>
-              </Select.Positioner>
-            </Portal>
-          </Select.Root>
+      <form>
+        <Group flexDirection={{ base: "column", md: "row" }} gap={4}>
+          <Box width={selectWidth}>
+            <Select.Root
+              collection={perfiles}
+              size="sm"
+              width={selectWidth}
+              name='vendedor'
+              onChange={onChange}
+            >
+              <Select.HiddenSelect />
+              <Select.Label>Seleccion vendedor</Select.Label>
+              <Select.Control>
+                <Select.Trigger>
+                  <Select.ValueText placeholder="Usuario" />
+                </Select.Trigger>
+                <Select.IndicatorGroup>
+                  <Select.Indicator />
+                </Select.IndicatorGroup>
+              </Select.Control>
+              <Portal>
+                <Select.Positioner>
+                  <Select.Content>
+                    {perfiles.items.map((item) => (
+                      <Select.Item item={item} key={item.value}>
+                        {item.label}
+                        <Select.ItemIndicator />
+                      </Select.Item>
+                    ))}
+                  </Select.Content>
+                </Select.Positioner>
+              </Portal>
+            </Select.Root>
+          </Box>
 
-          <Field.Root >
+          <Field.Root>
             <Field.Label>Fecha</Field.Label>
-            <Input type='date' name='fecha' onChange={onChange}></Input>
+            <Input type='date' name='fecha' onChange={onChange} />
           </Field.Root>
-          <Field.Root >
+          <Field.Root>
             <Field.Label>Fecha Fin</Field.Label>
-            <Input type='date' name='fechaFin' onChange={onChange} min={filtros.fecha}></Input>
+            <Input type='date' name='fechaFin' onChange={onChange} min={filtros.fecha} />
           </Field.Root>
         </Group>
       </form>
 
-
-      <TareasAdministrativo filtro={filtros}></TareasAdministrativo>
+      <TareasAdministrativo filtro={filtros} />
     </Stack>
   )
 }
