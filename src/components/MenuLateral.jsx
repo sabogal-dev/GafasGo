@@ -27,7 +27,7 @@ export const MenuLateral = ({ usuario }) => {
                         <Drawer.Body>
                             <Flex flexDirection="column" height="100%" justify="space-between">
                                 <Stack>
-                                    {usuario === 4 &&
+                                    {usuario === "admin" &&
                                         <>
                                             <Group>
                                                 <Link to="/Asignar">

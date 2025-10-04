@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Input,
   Select,
@@ -14,6 +14,7 @@ import {
 import { addDay, format } from '@formkit/tempo'
 import { TareasAdministrativo } from '../components/TareasAdministrativo'
 import { Link } from 'react-router'
+import getVendedores from '../utils/getVendedores'
 
 // Chakra UI responsive styles documentation:
 // - useBreakpointValue: https://chakra-ui.com/docs/hooks/use-breakpoint-value
@@ -22,16 +23,25 @@ import { Link } from 'react-router'
 // - Group: Custom or from Chakra UI (if not, replace with Flex/Box)
 // - Select: https://chakra-ui.com/docs/components/select
 
-const perfiles = createListCollection({
-  items: [
-    { label: "JORGE", value: "1" },
-    { label: "YESID", value: "2" },
-    { label: "SANTIAGO", value: "3" },
-    { label: "TODOS", value: "1,2,3" }
-  ],
-})
-
 export const Administrativo = () => {
+
+
+
+  const [listavendedores, setlistavendedores] = useState([]);
+
+  useEffect(() => {
+    fetchVendedores();
+  }, [])
+
+  async function fetchVendedores() {
+    const { vendedores, error } = await getVendedores();
+    if (error) {
+      console.log(error);
+      return;
+    }
+    setlistavendedores(vendedores);
+  }
+
   const [filtros, setfiltros] = useState({
     usuario: "1,2,3",
     fecha: format(addDay(new Date(), -30), "YYYY-MM-DD", "en"),
@@ -49,6 +59,14 @@ export const Administrativo = () => {
       [name]: value
     })
   }
+
+  // crear lista de vendedores para el select
+  const perfiles = createListCollection({
+    items: listavendedores.map(v => ({
+      label: v.nombre || v.name,
+      value: v.id.toString()
+    }))
+  })
 
   return (
     <Stack m={5} spacing={6}>

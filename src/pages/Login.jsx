@@ -1,25 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input, Stack, Heading, Portal, Select, createListCollection, Field, Button, Alert } from '@chakra-ui/react'
 import { useNavigate } from 'react-router'
-
-const perfiles = createListCollection({
-    items: [
-        { label: "JORGE", value: "1" },
-        { label: "YESID", value: "2" },
-        { label: "SANTIAGO", value: "3" },
-        { label: "ADMIN", value: "4"}
-    ],
-})
-
-const usuarios = [
-    { usuario: 1, clave: "jorge" },
-    { usuario: 2, clave: "yesid" },
-    { usuario: 3, clave: "santiago" },
-    { usuario: 4, clave: "codeoptikal" }
-]
+import getVendedores from '../utils/getVendedores'
 
 export const Login = () => {
 
+    const [listausuarios, setlistausuarios] = useState([])
+    useEffect(() => {
+        fetchVendedores();
+    }, [])
+
+    async function fetchVendedores() {
+        const { vendedores, error } = await getVendedores();
+        if (error) {
+            console.log(error);
+            return;
+        }
+        setlistausuarios(vendedores);
+    }
     const navigate = useNavigate();
 
     const [formData, setformData] = useState({
@@ -40,16 +38,34 @@ export const Login = () => {
 
     const onSubmit = () => {
         if (formData.usuario != "" && formData.password != "") {
-            if (formData.password == usuarios[(formData.usuario) - 1].clave) {
+            const usuarioSeleccionado = listausuarios.find(u => u.id == formData.usuario);
+            if (usuarioSeleccionado && formData.password == usuarioSeleccionado.clave) {
                 console.log("contraseña correcta");
-                localStorage.setItem("user", formData.usuario)
+                const usuarioParaStorage = {
+                    id: usuarioSeleccionado.id,
+                    nombre: usuarioSeleccionado.nombre,
+                    role: usuarioSeleccionado.role,
+                    whatsapp: usuarioSeleccionado.whatsapp,
+                }
+                localStorage.setItem("user", JSON.stringify(usuarioParaStorage));
                 navigate("/")
+            } else {
+                seterror(true)
             }
         }
         else {
             seterror(true)
         }
     }
+
+    const perfiles = createListCollection({
+        items: listausuarios.map(v => ({
+            label: v.nombre || v.name,
+            value: v.id.toString()
+        })),
+    });
+
+
     return (
         <>
             <Stack m="5">

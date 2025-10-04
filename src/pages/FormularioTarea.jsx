@@ -81,7 +81,7 @@ export const FormularioTarea = () => {
         envioWhatsapp(`Cliente : ${searchParams.get("cliente")}\n Tipo Visita : ${formData.categoriaVisita} \n \n Detalle Visita : ${formData.DetalleVisita}`)
       }
       catch (falloEnvio) {
-        console.log("erro de envio de mensaje whatsapp : " + falloEnvio)
+        console.log("error de envio de mensaje whatsapp : " + falloEnvio)
       }
       setTimeout(() => {
         navigate("/")

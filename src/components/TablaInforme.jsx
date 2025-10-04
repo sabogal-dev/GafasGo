@@ -39,17 +39,16 @@ export const TablaInforme = ({ tareas, clientes }) => {
                 </Table.Header>
                 <Table.Body>
                     {tareas && tareas.map((tarea) => {
-                        const dataCliente = clientes.find(cliente => cliente.id == tarea.id_cliente)
-                        if(!dataCliente){
-                            console.log(tarea)
-                            console.log(dataCliente)
-                            return}
+                        let dataCliente = clientes.find(cliente => cliente.id == tarea.id_cliente)
+                        if (!dataCliente) {
+                            dataCliente = { name: "Cliente no encontrado en base de datos", city: "" }
+                        }
                         return (
                             <Table.Row key={tarea.id}>
                                 <Table.Cell>{vendedores[tarea.id_vendedor - 1]}</Table.Cell>
                                 <Table.Cell>{dataCliente.name}</Table.Cell>
                                 <Table.Cell>{dataCliente.city}</Table.Cell>
-                                <Table.Cell>{tarea.fechaVisita &&  format(tarea.fechaVisita.replace(" ", "T").replace("+00", "+00:00"), "MMMM-DD")}</Table.Cell>
+                                <Table.Cell>{tarea.fechaVisita && format(tarea.fechaVisita.replace(" ", "T").replace("+00", "+00:00"), "MMMM-DD")}</Table.Cell>
                                 <Table.Cell>{format(tarea.fechaLimite, "MMMM-DD")}</Table.Cell>
                                 <Table.Cell> {tarea.estadoVisita != "VISITADO" ? <Badge colorPalette="red">{tarea.estadoVisita}</Badge> : <Badge colorPalette="green">{tarea.estadoVisita}</Badge>}</Table.Cell>
                                 <Table.Cell>{tarea.nombreCorreria}</Table.Cell>

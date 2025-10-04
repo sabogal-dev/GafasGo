@@ -15,10 +15,25 @@ import {
     Portal,
 } from "@chakra-ui/react";
 import borrarTarea from "../utils/borrarTarea.js";
+import { useEffect, useState } from "react";
+import getVendedores from "../utils/getVendedores";
 
 export const CardTarea = ({ tarea, cliente }) => {
     const navigate = useNavigate();
     const usuario = localStorage.getItem("user");
+    const [listaVendedores, setListaVendedores] = useState([]);
+
+    useEffect(() => {
+        fetchVendedores();
+    }, [])
+    async function fetchVendedores() {
+        const { vendedores, error } = await getVendedores();
+        if (error) {
+            console.log(error);
+            return;
+        }
+        setListaVendedores(vendedores);
+    }
 
     const handleNavigate = (id) => {
         navigate(
@@ -52,15 +67,11 @@ export const CardTarea = ({ tarea, cliente }) => {
                                 {tarea.estadoVisita.toLowerCase()}
                             </Badge>
                                 <Badge colorPalette="green">
-                                    {tarea.id_vendedor == 1
-                                        ? "Jorge"
-                                        : tarea.id_vendedor == 2
-                                        ? "Yesid"
-                                        : tarea.id_vendedor == 3
-                                        ? "Santiago"
-                                        : tarea.id_vendedor == 4
-                                        ? "Admin"
-                                        : "Desconocido"}
+                                    {listaVendedores.map(vendedor => {
+                                        if (vendedor.id === tarea.id_vendedor) {
+                                            return vendedor.nombre;
+                                        }
+                                    })}
                                 </Badge>
                         </Group>
                     </Stack>

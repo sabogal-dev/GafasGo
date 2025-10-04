@@ -40,7 +40,7 @@ export const TareasAdministrativo = ({ filtro }) => {
 
 
 //funciones
-const fetchTareas = async ({ vendedor = "1,2,3", fecha,fechaFin,  estados }) => {
+const fetchTareas = async ({ vendedor = "1,2,3,4,5,6,7,8,9,10", fecha, fechaFin, estados }) => {
     let { data: tareas, error } = await supabase
         .from('tarea')
         .select('*')
