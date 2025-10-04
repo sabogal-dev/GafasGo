@@ -5,19 +5,21 @@ import odooFetch from '../utils/odooFetch'
 import { supabase } from '../utils/supabase'
 import { TablaInforme } from './TablaInforme'
 import { Estadisticas } from './Estadisticas'
-
+import { Spinner } from '@chakra-ui/react'
 export const TareasAdministrativo = ({ filtro }) => {
 
     const [tareas, setTareas] = useState("")
     const [dataCliente, setDataCliente] = useState("")
-
+    const [Cargando, setCargando] = useState(true)
 
     useEffect(() => {
 
         const myfuntion = async () => {
+            setCargando(true)
             const { listaTareas, nombresClientes } = await fetchTareas(filtro)
             setTareas(listaTareas)
             setDataCliente(nombresClientes)
+            setCargando(false)
         }
 
         myfuntion()
@@ -28,6 +30,12 @@ export const TareasAdministrativo = ({ filtro }) => {
 
     return (
         <>
+            {Cargando && (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px', flexDirection: 'column' }}>
+                    <span>Cargando...</span>
+                    <Spinner />
+                </div>
+            )}
             {tareas &&
                 <>
                     <Estadisticas tareas={tareas} fecha={filtro.fecha}></Estadisticas>
@@ -47,7 +55,7 @@ const fetchTareas = async ({ vendedor = "1,2,3,4,5,6,7,8,9,10", fecha, fechaFin,
         .in('estadoVisita', estados)
         .filter('id_vendedor', 'in', `(${vendedor})`)
         .gte('fechaLimite', fecha)
-        .lte("fechaLimite", fechaFin )
+        .lte("fechaLimite", fechaFin)
     const listaTareas = tareas;
 
 
